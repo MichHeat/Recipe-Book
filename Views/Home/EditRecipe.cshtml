@@ -1,0 +1,126 @@
+﻿@model RecipeBook.Models.Recipe
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+    }
+
+    .recipe-form {
+        max-width: 600px;
+        margin: auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .ingredient-container {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .delete-ingredient-btn {
+        color: red;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .form-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .form-button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+@using (Html.BeginForm("SaveRecipe", "Home", FormMethod.Post, new { @class = "recipe-form" }))
+{
+    <div>
+        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.UserID)
+        @Html.HiddenFor(a => a.UserID)
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-input" })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Description, new { @class = "form-input" })
+    </div>
+    <div>
+        @Html.LabelFor(model => model.PrepTime, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.PrepTime, new { @class = "form-input" })
+    </div>
+    <div>
+        @Html.LabelFor(model => model.CookTime, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.CookTime, new { @class = "form-input" })
+    </div>
+
+    <div>
+        @Html.Label("Ingredients", htmlAttributes: new { @class = "form-label" })
+    </div>
+    <div id="ingredients-container">
+        <!-- If you want to edit multiple ingredients, assuming there's a collection named 'Ingredients' -->
+        @for (int i = 0; i < Model.Ingredients.Count; i++)
+        {
+            <div class="ingredient-container">
+                @Html.HiddenFor(a => a.Ingredients[i].Id)
+                @Html.HiddenFor(a => a.Ingredients[i].RecipeID)
+                @Html.TextBoxFor(model => model.Ingredients[i].Name, new { @class = "form-input", placeholder = "Ingredient Name" })
+                @Html.TextBoxFor(model => model.Ingredients[i].Qty, new { @class = "form-input", placeholder = "Quantity" })
+
+                <span class="delete-ingredient-btn" onclick="deleteIngredient(@i)">Delete</span>
+            </div>
+        }
+    </div>
+
+    <button type="button" onclick="addIngredient()" class="form-button">Add Ingredient</button>
+    <button type="submit" class="form-button">Save Recipe</button>
+    <button type="button" class="form-button" onclick="window.location.href='@Url.Action("YourRecipes", "Home")'">Go Back</button>
+}
+
+<script>
+    function addIngredient() {
+        var container = document.getElementById("ingredients-container");
+        var index = container.children.length;
+
+        var newIngredient = `
+            <div class="ingredient-container">
+                <input type="text" name="Ingredients[${index}].Name" class="form-input" placeholder="Ingredient Name" />
+                <input type="text" name="Ingredients[${index}].Qty" class="form-input" placeholder="Quantity" />
+
+                <span class="delete-ingredient-btn" onclick="deleteIngredient(${index})">Delete</span>
+            </div>
+        `;
+
+        container.insertAdjacentHTML('beforeend', newIngredient);
+    }
+
+    function deleteIngredient(index) {
+        var container = document.getElementById("ingredients-container");
+        var elementToDelete = container.children[index];
+        container.removeChild(elementToDelete);
+    }
+</script>

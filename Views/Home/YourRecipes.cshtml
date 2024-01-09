@@ -1,0 +1,275 @@
+﻿@model IEnumerable<RecipeBook.Models.Recipe>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url("https://wallpapers.com/images/high/food-4k-1vrcb0mw76zcg4qf.webp");
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        line-height: 16px;
+        color: #3B3B3B;
+    }
+
+    .parent_input_div {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding-top: 50px;
+    }
+
+    .top_header {
+        position: absolute;
+        top: 0px;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 5px 5px;
+        grid-auto-flow: row;
+        box-sizing: border-box;
+    }
+
+    .child_header {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .tables {
+        height: 500px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        gap: 10px;
+    }
+
+    .Recipes {
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 10px 10px 20px #d9d9d9, -10px -10px 20px #ffffff;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 5px 5px;
+        grid-auto-flow: row;
+        box-sizing: border-box;
+    }
+
+    .inside_div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+</style>
+
+<div class="parent_input_div">
+    <div class="top_header">
+        <div class="child_header">
+
+        </div>
+        <div class="child_header">
+
+        </div>
+        <div class="child_header">
+
+        </div>
+        <div class="child_header">
+
+        </div>
+        <div class="child_header">
+
+        </div>
+        <div class="child_header">
+
+        </div>
+        <div class="child_header">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recipeModal">
+                Add Recipe
+            </button>
+        </div>
+    </div>
+    <div class="tables">
+        <div class="Recipes">
+            <div class="inside_div">
+                Title
+            </div>
+            <div class="inside_div">
+                Preperation Time
+            </div>
+            <div class="inside_div">
+                Cooking Time
+            </div>
+            <div class="inside_div">
+                Edit
+            </div>
+            <div class="inside_div">
+                Delete
+            </div>
+        </div>
+        @foreach (var existingRecipe in Model)
+        {
+            @Html.HiddenFor(modelItem => existingRecipe.Id)
+            <div class="Recipes" style="cursor:pointer">
+                <div class="inside_div">
+                    @existingRecipe.Title
+                </div>
+                <div class="inside_div">
+                    @existingRecipe.PrepTime
+                </div>
+                <div class="inside_div">
+                    @existingRecipe.CookTime
+                </div>
+                <div class="inside_div">
+                    @Html.ActionLink("Edit", "EditRecipe", "Home", new { id = existingRecipe.Id },null)
+                </div>
+                <div class="inside_div">
+                    @Html.ActionLink("Delete", "DeleteRecipe", "Home", new { id = existingRecipe.Id }, new { onclick = "return confirm('Are you sure you want to delete this recipe?');" })
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal" id="recipeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Recipe</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Form to input recipe details -->
+                <form id="recipeForm">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control" id="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="preptime">Preparation Time (minutes):</label>
+                        <input type="number" class="form-control" id="preptime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cooktime">Cooking Time (minutes):</label>
+                        <input type="number" class="form-control" id="cooktime" required>
+                    </div>
+
+                    <!-- Dynamic section for ingredients -->
+                    <div id="ingredientsSection">
+                        <h5>Ingredients:</h5>
+                        <button type="button" class="btn btn-success" id="addIngredientBtn">Add Ingredient</button>
+                    </div>
+
+                    <hr>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Recipe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Function to renumber ingredients after removal
+        function renumberIngredients() {
+            $(".form-group[id^='ingredient']").each(function (index) {
+                $(this).attr("id", `ingredient${index + 1}`);
+                $(this).find("label[for^='ingredientName']").attr("for", `ingredientName${index + 1}`);
+                $(this).find("input[id^='ingredientName']").attr("id", `ingredientName${index + 1}`);
+                $(this).find("label[for^='quantity']").attr("for", `quantity${index + 1}`);
+                $(this).find("input[id^='quantity']").attr("id", `quantity${index + 1}`);
+                $(this).find("button[onclick^='removeIngredient']").attr("onclick", `removeIngredient(${index + 1})`);
+            });
+            ingredientCounter = $(".form-group[id^='ingredient']").length + 1;
+        }
+
+        // Counter for dynamically added ingredients
+        let ingredientCounter = $(".form-group[id^='ingredient']").length + 1;
+
+        // Add ingredient button click event
+        $("#addIngredientBtn").click(function () {
+            let ingredientHtml = `
+                <div class="form-group" id="ingredient${ingredientCounter}">
+                    <label for="ingredientName${ingredientCounter}">Ingredient ${ingredientCounter}:</label>
+                    <input type="text" class="form-control" id="ingredientName${ingredientCounter}" required>
+                    <label for="quantity${ingredientCounter}">Quantity:</label>
+                    <input type="text" class="form-control" id="quantity${ingredientCounter}" required>
+                    <button type="button" class="btn btn-danger" onclick="removeIngredient(${ingredientCounter})">Remove</button>
+                </div>
+            `;
+            $("#ingredientsSection").append(ingredientHtml);
+            ingredientCounter++;
+        });
+
+        // Recipe form submission
+        $("#recipeForm").submit(function (event) {
+            event.preventDefault();
+
+            // Collect data from the form
+            let recipeData = {
+                title: $("#title").val(),
+                description: $("#description").val(),
+                preptime: $("#preptime").val(),
+                cooktime: $("#cooktime").val(),
+                ingredients: []
+            };
+
+            // Collect ingredients data
+            for (let i = 1; i < ingredientCounter; i++) {
+                let ingredient = {
+                    name: $(`#ingredientName${i}`).val(),
+                    qty: $(`#quantity${i}`).val()
+                };
+                recipeData.ingredients.push(ingredient);
+            }
+
+            // Perform AJAX post request
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddRecipe", // Replace with your actual backend API endpoint
+                data: JSON.stringify(recipeData),
+                contentType: "application/json",
+                success: function () {
+                    console.log("Recipe added successfully");
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error("Error adding recipe", error);
+                    // Optionally, you can handle errors and display an error message
+                }
+            });
+
+            // Close the modal
+            $("#recipeModal").modal("hide");
+        });
+
+        // Function to remove dynamically added ingredient
+        window.removeIngredient = function (ingredientCounter) {
+            $(`#ingredient${ingredientCounter}`).remove();
+            renumberIngredients();
+        };
+    });
+</script>
+
+

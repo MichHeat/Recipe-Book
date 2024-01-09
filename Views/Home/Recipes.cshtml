@@ -1,0 +1,548 @@
+﻿@{
+    ViewBag.Title = "Recipes";
+}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url("https://wallpapers.com/images/high/food-4k-1vrcb0mw76zcg4qf.webp");
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        line-height: 16px;
+        color: #3B3B3B;
+    }
+
+    .card {
+        margin: 25px auto;
+        width: 560px;
+        overflow: auto;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+        .card .image {
+            float: left;
+            width: 500px;
+            height: 550px;
+            background-size: cover;
+        }
+
+        .card#rusk .image {
+            background-image: url("https://woodenspoonkitchen.co.za/wp-content/uploads/2023/08/Rusks-4-1-scaled.jpg");
+        }
+
+        .card#cheese .image {
+            background-image: url("https://lindseyeatsla.com/wp-content/uploads/2021/12/Lindseyeats_Baked_Camembert-12.jpg");
+        }
+
+        .card#chicken .image {
+            background-image: url("https://assets.epicurious.com/photos/609d6d69d15d730b3e8d2027/master/pass/marinated%20chicken%20breasts.jpg");
+        }
+
+        .card#bread .image {
+            background-image: url("https://sallysbakingaddiction.com/wp-content/uploads/2015/06/cornbread-recipe.jpg");
+        }
+
+        .card#dessert .image {
+            background-image: url("https://www.amawaterways.com/Assets/Connections/Thumb/Malva_Pudding_Hero.jpg");
+        }
+
+        .card#cookies .image {
+            background-image: url("https://www.snowflake.co.za/simple-files/6ab17f61e6f241ebb62df6127ffb187e/occasions-festive-season-ginger-snaps.jpg");
+        }
+
+    .recipe .columns {
+        overflow: auto;
+    }
+
+    .recipe .directions {
+        float: left;
+        width: 240px;
+    }
+
+        .recipe .directions ol {
+            padding-left: 15px;
+            line-height: 24px;
+        }
+
+    .recipe h2 {
+        margin-top: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        line-height: 29px;
+        color: #F16059;
+    }
+
+    .recipe h3 {
+        padding: 6px;
+        border-width: 1px 0;
+        border-style: solid;
+        border-color: #3B3B3B;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #F16059;
+    }
+
+    .recipe .ingredients {
+        float: left;
+        margin-right: 15px;
+        width: 205px;
+    }
+
+        .recipe .ingredients ul {
+            padding-left: 15px;
+            line-height: 24px;
+            list-style-type: square;
+        }
+
+    .recipe {
+        float: left;
+        padding: 20px;
+        width: 500px;
+        height: 550px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+    }
+
+        .recipe .time {
+            margin-bottom: 20px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #3B3B3B;
+            overflow: auto;
+        }
+
+            .recipe .time div {
+                float: left;
+                padding-left: 6px;
+                width: 33.3333%;
+                box-sizing: border-box;
+                text-transform: uppercase;
+                line-height: 32px;
+            }
+
+                .recipe .time div.cook {
+                    border-width: 0 1px;
+                    border-style: solid;
+                    border-color: #3B3B3B;
+                }
+
+            .recipe .time img {
+                margin-right: 5px;
+                vertical-align: middle;
+            }
+
+            .recipe .time strong {
+                font-family: 'Montserrat', sans-serif;
+            }
+
+    h1 {
+        margin: 0;
+        background: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 48px;
+        font-weight: bold;
+        text-transform: uppercase;
+        line-height: 140px;
+        color: #F16059;
+        text-align: center;
+    }
+
+        h1 img {
+            margin-right: 16px;
+        }
+
+    .navbar input[type="checkbox"],
+    .navbar .hamburger-lines {
+        display: none;
+    }
+
+    .navbar {
+        box-shadow: 0px 5px 10px 0px #aaa;
+        /*position: fixed;*/
+        width: 100%;
+        background: #fff;
+        color: #000;
+        opacity: 0.85;
+        height: 50px;
+        z-index: 12;
+    }
+
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        height: 64px;
+        align-items: center;
+    }
+
+    .menu-items {
+        order: 2;
+        display: flex;
+    }
+
+        .menu-items li {
+            list-style: none;
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .menu-items a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            transition: color 0.3s ease-in-out;
+        }
+
+            .menu-items a:hover {
+                color: #117964;
+                transition: color 0.3s ease-in-out;
+            }
+
+    .logo {
+        order: 1;
+        font-size: 2.3rem;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Recipe Information</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700%7COpen+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1><img src="https://i.imgur.com/mSOUtgP.png" alt="chef hat">Recipe Instructions</h1>
+    <article id="rusk" class="card">
+        <div class="image"></div>
+        <div class="recipe">
+            <h2>Buttermilk Rusks</h2>
+            <div class="time">
+                <div class="prep">
+                    <img src="https://i.imgur.com/gSruhJV.png" alt="prep time"><strong>Prep Time:</strong> 30 Min
+                </div>
+                <div class="cook">
+                    <img src="https://i.imgur.com/gpfAuCO.png" alt="cook time"><strong>Cook Time:</strong> 20 Min
+                </div>
+                <div class="total">
+                    <img src="https://i.imgur.com/UG42xrB.png" alt="total time"><strong>Total Time:</strong> 50 Min
+                </div>
+            </div>
+            <p class="description">Light and crisp rusks. I added pecan nuts, sunflower and pumpkin seeds to my batch sometimes.</p>
+            <div class="columns">
+                <section class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        <li>10ml salt</li>
+                        <li>750g margarine (preferably not butter)</li>
+                        <li>625ml (500 g) sugar</li>
+                        <li>15ml whole aniseed (optional)</li>
+                        <li>2kg Snowflake self-raising flour</li>
+                        <li>3  extra-large eggs</li>
+                        <li>1.5 litres buttermilk</li>
+
+                    </ul>
+                </section>
+                <section class="directions">
+                    <h3>Directions</h3>
+                    <ol>
+                        <li>Sift flour and salt together. Rub in margarine with fingertips until mixture resembles fine breadcrumbs. Add sugar and aniseed..</li>
+                        <li>Whisk eggs and buttermilk together. Add to dry ingredients and mix well to a soft dough.</li>
+                        <li>Shape into balls and place into two greased 24 x 34 cm oven pans. Bake in a preheated oven at 160 °C for 20 minutes. Reduce oven temperature to 150 °C and continue baking for about 30 minutesli>
+                        <li>Turn out onto wire racks to cool slightly. Cut or break into pieces while still warm. Dry out in a cool oven at about 70 °C for 6 - 8 hours, or overnight. Store in an airtight container.</li>
+
+                    </ol>
+                </section>
+            </div>
+        </div>
+    </article>
+    <article id="cheese" class="card">
+        <div class="image"></div>
+        <div class="recipe">
+            <h2>Baked Camembert</h2>
+            <div class="time">
+                <div class="prep">
+                    <img src="https://i.imgur.com/gSruhJV.png" alt="prep time"><strong>Prep Time:</strong> 5 Min
+                </div>
+                <div class="cook">
+                    <img src="https://i.imgur.com/gpfAuCO.png" alt="cook time"><strong>Cook Time:</strong> 10 Min
+                </div>
+                <div class="total">
+                    <img src="https://i.imgur.com/UG42xrB.png" alt="total time"><strong>Total Time:</strong> 15 Min
+                </div>
+            </div>
+            <p class="description">Oven-cook or air-fry your favourite soft cheese until gooey for this last-minute crowd-pleaser. </p>
+            <div class="columns">
+                <section class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        <li>250g camembert or brie, or other similar cheese</li>
+                        <li>1 tbsp vermouth, or dry white wine, or kirsch</li>
+                        <li>2 thyme sprigs</li>
+                        <li>pinch of dried chilli flakes</li>
+                        <li>crackers or toasted bread, to serve</li>
+
+                    </ul>
+                </section>
+                <section class="directions">
+                    <h3>Directions</h3>
+                    <ol>
+                        <li>Heat oven to 200C/180C fan/gas 6 or heat your air fryer to 180C for 4 mins.</li>
+                        <li>Unwrap the camembert from its packaging, then place back into its box. Tie string around the box to secure. If using a cheese that doesn’t have a box, put into a ramekin or other ovenproof dish.li>
+                        <li>Slash the cheese a few times and top with vermouth, dry white wine or kirsch, thyme sprigs and a pinch of dried chilli flakes.</li>
+                        <li>Bake on a baking tray for 20 mins, or if using an air-fryer, cook for 15-20 mins until gooey. Serve with toasted bread or crackers for dipping.</li>
+
+                    </ol>
+                </section>
+            </div>
+        </div>
+    </article>
+    <article id="chicken" class="card">
+        <div class="image"></div>
+        <div class="recipe">
+            <h2>Marinated Chicken Breasts With Grilled Pineapple Relish</h2>
+            <div class="time">
+                <div class="prep">
+                    <img src="https://i.imgur.com/gSruhJV.png" alt="prep time"><strong>Prep Time:</strong> 10 Min
+                </div>
+                <div class="cook">
+                    <img src="https://i.imgur.com/gpfAuCO.png" alt="cook time"><strong>Cook Time:</strong> 2 hrs 25 mins
+                </div>
+                <div class="total">
+                    <img src="https://i.imgur.com/UG42xrB.png" alt="total time"><strong>Total Time:</strong> 2 hrs 35 mins
+                </div>
+            </div>
+            <p class="description">This tropical chicken has become our new favorite savory pineapple dish. The acidity from the pineapple marinade will help to tenderize the chicken breast and the sugar works to caramelize the meat while grilling.</p>
+            <div class="columns">
+                <section class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        <li>1 c. unsweetened pineapple juice</li>
+                        <li>3/4 c. ketchup</li>
+                        <li>1/2 c. low-sodium soy sauce</li>
+                        <li>1/2 c. brown sugar</li>
+                        <li>2 cloves garlic, minced</li>
+                        <li>1 tbsp. freshly minced ginger</li>
+                        <li>1 lb. boneless skinless chicken breasts</li>
+                        <li>1 tsp. vegetable oil, plus more for grill</li>
+                        <li>
+                            1 pineapple, sliced into rings & halved
+                            Thinly sliced green onions, for garnish
+                        </li>
+
+                    </ul>
+                </section>
+                <section class="directions">
+                    <h3>Directions</h3>
+                    <ol>
+                        <li>In a large bowl, whisk together pineapple juice, ketchup, soy sauce, brown sugar, garlic, and ginger until combined</li>
+                        <li>Add chicken to a large resealable plastic bag and pour in marinade. Let marinate in the fridge at least 2 hours and up to overnight.</li>
+                        <li>When ready to grill, heat grill to high. Oil grates and grill chicken, basting with marinade, until charred and cooked through, 8 minutes per side.li>
+                        <li>Toss pineapple with oil and grill until charred, 2 minutes per side.</li>
+                        <li>Garnish chicken and pineapple with green onions before serving.</li>
+
+                    </ol>
+                </section>
+            </div>
+        </div>
+    </article>
+    <article id="bread" class="card">
+        <div class="image"></div>
+        <div class="recipe">
+            <h2>Cornbread</h2>
+            <div class="time">
+                <div class="prep">
+                    <img src="https://i.imgur.com/gSruhJV.png" alt="prep time"><strong>Prep Time:</strong> 10 Min
+                </div>
+                <div class="cook">
+                    <img src="https://i.imgur.com/gpfAuCO.png" alt="cook time"><strong>Cook Time:</strong> 15 Min
+                </div>
+                <div class="total">
+                    <img src="https://i.imgur.com/UG42xrB.png" alt="total time"><strong>Total Time:</strong> 1 Hour
+                </div>
+            </div>
+            <p class="description">I found the perfect ratio of ingredients for soft, moist, and buttery cornbread with crisp-crunchy edges. I guarantee this is the best cornbread recipe you’ll try!</p>
+            <div class="columns">
+                <section class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        <li>1 cup (120g) fine cornmeal</li>
+                        <li>1 cup (125g) all-purpose flour (spooned & leveled)</li>
+                        <li>1 teaspoon baking powder</li>
+                        <li>1/2 teaspoon baking soda</li>
+                        <li>1/8 teaspoon salt</li>
+                        <li>1/2 cup (113g) unsalted butter, melted and slightly cooled</li>
+                        <li>1/3 cup (67g) packed light or dark brown suga</li>
+                        <li>2 Tablespoons (30ml) honey</li>
+                        <li>1 large egg, at room temperature</li>
+                        <li>
+                            1 cup (240ml) buttermilk, at room temperature*
+                        </li>
+                    </ul>
+                </section>
+                <section class="directions">
+                    <h3>Directions</h3>
+                    <ol>
+                        <li>Preheat oven to 400°F (204°C). Grease and lightly flour a 9-inch square baking pan. Set aside.</li>
+                        <li>Whisk the cornmeal, flour, baking powder, baking soda, and salt together in a large bowl. Set aside. In a medium bowl, whisk the melted butter, brown sugar, and honey together until completely smooth and thick. Then, whisk in the egg until combined. Finally, whisk in the buttermilk. Pour the wet ingredients into the dry ingredients and whisk until combined. Avoid over-mixing.</li>
+                        <li>Pour batter into prepared baking pan. Bake for 20 minutes or until golden brown on top and the center is cooked through. Use a toothpick to test. Edges should be crispy at this point. Allow to slightly cool before slicing and serving. Serve cornbread with butter, honey, jam, or whatever you like.</li>
+                        <li>
+                            Wrap leftovers up tightly and store at room temperature for up to 1 week.
+                        </li>
+
+                    </ol>
+                </section>
+            </div>
+        </div>
+    </article>
+    <article id="dessert" class="card">
+        <div class="image"></div>
+        <div class="recipe">
+            <h2>Malva Pudding</h2>
+            <div class="time">
+                <div class="prep">
+                    <img src="https://i.imgur.com/gSruhJV.png" alt="prep time"><strong>Prep Time:</strong> 30 Min
+                </div>
+                <div class="cook">
+                    <img src="https://i.imgur.com/gpfAuCO.png" alt="cook time"><strong>Cook Time:</strong> 45 Min
+                </div>
+                <div class="total">
+                    <img src="https://i.imgur.com/UG42xrB.png" alt="total time"><strong>Total Time:</strong> 1hour 15 mins
+                </div>
+            </div>
+            <p class="description">
+                It’s high-calorie but made from fresh, simple ingredients. And I’ve found that for most, that’s the most important thing.
+            </p>
+            <div class="columns">
+                <section class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        <li>1 tbsp butter room temperature</li>
+                        <li>1 cup brown sugar</li>
+                        <li>4 tbsp apricot jam</li>
+                        <li>1 large egg</li>
+                        <li>1 cup milk</li>
+                        <li>2 tbsp vinegar</li>
+                        <li>2 tsp vanilla essence</li>
+                        <li>1 cup all-purpose flour</li>
+                        <li>1 tsp baking soda</li>
+                        <li>½ tsp salt</li>
+                        <li>Sauce:</li>
+                        <li>2 tbsp butter</li>
+                        <li>125 ml cream</li>
+                        <li>4 tbsp brown sugar</li>
+                        <li>2 tbsp water</li>
+                    </ul>
+                </section>
+                <section class="directions">
+                    <h3>Directions</h3>
+                    <ol>
+                        <li>Preheat the oven to 180℃ (350℉). Ovens are temperamental, so if you know yours needs a bit more (or less) of a push, feel free to adjust.</li>
+                        <li>In a large mixing bowl add your first 4 ingredients - butter, sugar, jam and egg. Beat until it lightens and gets a bit fluffier. If you only have a fork, the fluffy part isn’t make-or-break.</li>
+                        <li>In a large measuring cup or a bowl, add milk, then vinegar and vanilla essence. Whisk lightly.</li>
+                        <li>In another measuring cup/bowl, add bicarb to flour and give it a quick stir.</li>
+                        <li>Alternating between the milk mixture and the flour, add to the large mixing bowl and mix well as you go along.</li>
+                        <li>Pour into a lightly greased oven-proof dish (ours was 30x15cm, but it could definitely have been a bit smaller).</li>
+                        <li>Bake for 45 minutes, or until a knife comes out with spongy crumbs stuck to it (it’s not likely to come out clean) rather than uncooked batter. The pudding will stay in its mold and rest for a bit once the sauce is poured over.</li>
+                        <li>Sauce:</li>
+                        <li>Add all sauce ingredients together in a pot and bring to a boil.</li>
+                        <li>Let it simmer, stirring constantly, for 3 minutes. This time will give the sauce a richer, deeper taste.</li>
+                        <li>Stab the pudding a few times with a fork to help the sauce sink in so that it doesn’t pool at the sides and soak in only there. Then pour the sauce over slowly, being sure you’re not leaving any part dry.</li>
+
+                    </ol>
+                </section>
+            </div>
+        </div>
+    </article>
+    <article id="cookies" class="card">
+        <div class="image"></div>
+        <div class="recipe">
+            <h2>Ginger Cookies</h2>
+            <div class="time">
+                <div class="prep">
+                    <img src="https://i.imgur.com/gSruhJV.png" alt="prep time"><strong>Prep Time:</strong> 10 Min
+                </div>
+                <div class="cook">
+                    <img src="https://i.imgur.com/gpfAuCO.png" alt="cook time"><strong>Cook Time:</strong> 30 Min
+                </div>
+                <div class="total">
+                    <img src="https://i.imgur.com/UG42xrB.png" alt="total time"><strong>Total Time:</strong> 40 Min
+                </div>
+            </div>
+            <p class="description">Please note that the cookie dough needs a couple of hours rest time in the fridge before baking. This was not added to the preparation time.</p>
+            <div class="columns">
+                <section class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        <li>
+                            500
+                            ml golden syrup (2 cups corn syrup will do)
+                        </li>
+                        <li>
+                            2
+                            eggs
+                        </li>
+                        <li>
+                            50
+                            ml vinegar
+                        </li>
+                        <li>
+                            50
+                            ml dried ginger, the dried, ground spice
+                        </li>
+                        <li>
+                            14.79
+                            ml cinnamon
+                        </li>
+                        <li>
+                            4.92
+                            ml ground cloves
+                        </li>
+                        <li>
+                            500
+                            ml light brown sugar
+                        </li>
+                        <li>
+                            1892.72
+                            ml flour, unsifted
+                        </li>
+                        <li>
+                            30
+                            g baking soda
+                        </li>
+                        <li>
+                            9.85
+                            ml salt
+                        </li>
+
+                    </ul>
+                </section>
+                <section class="directions">
+                    <h3>Directions</h3>
+                    <ol>
+                        <li>Mix the golden syrup (or corn syrup), butter, eggs, vinegar, ginger, cinnamon and cloves in a large mixing bowl.</li>
+                        <li>Stir in the sugar.</li>
+                        <li>Sift the flour, baking soda and salt into a bowl.</li>
+                        <li>Mix into the syrup-sugar mixture to make a dough or batter.</li>
+                        <li>Cover and put in fridge for a few hours.</li>
+                        <li>Heat oven to 200 deg C/400 deg F. Grease baking tins.</li>
+                        <li>Roll the dough between your palms into little balls the size of walnuts. Place these balls with space between them on greased baking tins.</li>
+                        <li>Press each cookie just slightly flatter with the tines of a fork.</li>
+                        <li>Bake about 12 - 15 mins or until nicely browned, in centre of oven.</li>
+                        <li>Cool slightly in the tins, then cool completely on wire racks.</li>
+                        <li>Keep in airtight tins. About 15 doz cookies.</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+    </article>
+
+</body>
+</html>
